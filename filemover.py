@@ -24,7 +24,6 @@ class Filemover:
     def move_files(self):
         print(self.extension)
         print(self.file_option)
-
         # print(f"{option} {extension} files from:\n{source}\n to:\n {destination}")s
 
 
@@ -109,6 +108,8 @@ class Options:
 class Source:
     def __init__(self, state=None):
         self.state = state
+    yoyoyoyo
+
     pass
 
 
