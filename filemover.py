@@ -37,6 +37,7 @@ class FrameGui:
         self.main_state = Buttons()
         Options(root=self.root, state=self.main_state)
         Extensions(state=self.main_state)
+        Subfolders(state=self.main_state)
         # Source(state=self.main_state)
         # Destination(state=self.main_state)
         self.root.mainloop()
@@ -108,8 +109,6 @@ class Options:
 class Source:
     def __init__(self, state=None):
         self.state = state
-    yoyoyoyo
-
     pass
 
 
@@ -118,18 +117,33 @@ class Destination:
         self.state = state
     pass
 
+class Subfolders:
+    def __init__(self, state=None):
+        self.state = state
+        self.variable = tk.BooleanVar()
+        self.create_checkboxes()
+    def checkbox_value(self):
+        # print(self.variable.get())
+        self.state.subfolders = self.variable.get()
+    def create_checkboxes(self):
+        C = tk.Checkbutton(text="check subfolders", variable=self.variable, anchor="nw",
+                            onvalue=1, offvalue=0, height=1, width=5, padx=14, command=self.checkbox_value)
+        C.grid(row=1, column=3)
+
 
 class Buttons:
     def __init__(self):
         self.extension = []
+        self.file_option = "Not chosen"
         self.source = False
         self.destination = False
-        self.file_option = "Not chosen"
+        self.subfolders = False
         self.create_buttons()
 
     def check_state(self):
         print(self.extension)
         print(self.file_option)
+        print(self.subfolders)
 
     def check_state_elaborate(self):
         if self.extension != [] and self.file_option == "Not chosen":
@@ -144,6 +158,7 @@ class Buttons:
 
     def create_buttons(self):
         B1 = tk.Button(text="Start", command=self.check_state_elaborate)
+        B1 = tk.Button(text="Start", command=self.check_state)
         B1.grid(row=12, column=1, padx=14, sticky=tk.W+tk.S)
 
 
