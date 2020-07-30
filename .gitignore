@@ -133,3 +133,5 @@ clean.py
 logic.py
 optionstest.py
 agenda.txt
+test.py
+.vscode/settings.json

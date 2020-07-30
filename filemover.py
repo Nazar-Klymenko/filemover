@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter.filedialog import askopenfilename, askdirectory
+
 #        self.files_found = 0
 
 
@@ -6,45 +8,44 @@ class Filemover:
     def __init__(self):
         pass
 
-    def choose_extension(self, chosen_extension):
-        self.extension = chosen_extension
-
-    def choose_option(self, chosen_option):
-        self.file_option = chosen_option
-
-    def choose_source(self, chosen_source):
-        self.source = chosen_source
-
-    def choose_destination(self, chosen_destination):
-        self.destination = chosen_destination
-
     def value_hub(self):
         pass
 
     def move_files(self):
-        print(self.extension)
-        print(self.file_option)
+        pass
         # print(f"{option} {extension} files from:\n{source}\n to:\n {destination}")s
 
 
 class FrameGui:
     def __init__(self):
         self.root = tk.Tk()
+        self.main_state = Buttons()
+        # self.frame1 = tk.LabelFrame(self.root, text="test", padx=20,pady=20)
+
+
+        self.frame1 = tk.Frame(self.root, padx=20,pady=20, bg = '#255869', bd = 0)
+        self.frame1.grid(row = 0, column = 0)
+        Options(root=self.root, state=self.main_state)
+        Extensions(frame=self.frame1,state=self.main_state)
+        Subfolders(state=self.main_state)
+        Source(state=self.main_state)
+        # Destination(state=self.main_state)
+        self.config()
+        self.root.mainloop()
+
+    def config(self):
         self.root.title("Filemover")
         self.root.iconphoto(False, tk.PhotoImage(file='./assets/folder.png'))
+        # self.root.pack(fill="both", expand=True)
         # self.root.geometry('900x450')
-        self.root.minsize(300, 300)
-        self.main_state = Buttons()
-        Options(root=self.root, state=self.main_state)
-        Extensions(state=self.main_state)
-        Subfolders(state=self.main_state)
-        # Source(state=self.main_state)
-        # Destination(state=self.main_state)
-        self.root.mainloop()
+        # self.root.minsize(300, 300)
+        # self.frame1.grid_rowconfigure(0, weight=1)
+        # self.frame1.grid_columnconfigure(0, weight=1)
 
 
 class Extensions:
-    def __init__(self, state=None):
+    def __init__(self, frame=None, state=None):
+        self.frame = frame
         self.state = state
         self.check_PNG = tk.BooleanVar()
         self.check_JPG = tk.BooleanVar()
@@ -83,9 +84,9 @@ class Extensions:
     def create_checkboxes(self):
         cn = 0
         for C in self.avaliable_extensions:
-            C = tk.Checkbutton(text=self.extension_names[cn], variable=self.avaliable_extensions[cn], anchor="nw",
+            C = tk.Checkbutton(self.frame, text=self.extension_names[cn], variable=self.avaliable_extensions[cn], anchor="w",
                                onvalue=1, offvalue=0, height=1, width=5, padx=14, command=self.checkbox_value)
-            C.grid(row=cn, column=1)
+            C.grid(row=cn, column=1, sticky=tk.E+tk.N)
             cn += 1
 
 
@@ -103,14 +104,23 @@ class Options:
         W = tk.OptionMenu(self.root, self.option,
                           "Copy to", "Move to", "Delete", command=self.send_option)
         self.option.set("Choose option")
-        W.grid(row=1, column=2)
+        W.grid(row=14, column=7,sticky=tk.W+tk.S)
 
 
 class Source:
     def __init__(self, state=None):
         self.state = state
+        self.create_buttons()
     pass
 
+    def get_source(self):
+        directory = askdirectory()
+        self.state.source=directory
+        print(directory)
+
+    def create_buttons(self):
+        B1 = tk.Button(text="get src", anchor="nw", command=self.get_source)
+        B1.grid(row=2, column=5, padx=14, sticky=tk.W+tk.S)
 
 class Destination:
     def __init__(self, state=None):
@@ -123,7 +133,6 @@ class Subfolders:
         self.variable = tk.BooleanVar()
         self.create_checkboxes()
     def checkbox_value(self):
-        # print(self.variable.get())
         self.state.subfolders = self.variable.get()
     def create_checkboxes(self):
         C = tk.Checkbutton(text="check subfolders", variable=self.variable, anchor="nw",
